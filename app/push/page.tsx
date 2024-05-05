@@ -52,8 +52,8 @@ export default function Page() {
     <div className="min-h-screen p-4 flex flex-col gap-4">
       <div className="flex items-center justify-between border-b pb-2">
         <h1 className="font-semibold text-xl ">📝Nhật ký leo day</h1>
-        <Button variant={"outline"} size={"sm"}>
-          <IoIosAddCircleOutline className="w-6 h-6 mr-1" /> Đóng góp
+        <Button asChild variant={"outline"} size={"sm"}>
+         <Link href={"/push/add"}> <IoIosAddCircleOutline className="w-6 h-6 mr-1" /> Đóng góp</Link>
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-x-4 gap-y-8 mt-4">

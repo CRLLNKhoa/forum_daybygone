@@ -122,3 +122,34 @@ export async function getLogHomePage() {
       console.log(error);
     }
   }
+
+
+  export async function addCmt(content: any, id: number) {
+    try {
+      const supabase = await createSupabaseServerClient();
+      const user = await currentUser();
+      const { data, error } = await supabase
+        .from("cmt")
+        .insert([{ content: content, log_id: id, name: user?.username || "Idol ẩn danh", avatar: user?.imageUrl }])
+        .select("*");
+      if (error) {
+        return { status: 400, data: [error] };
+      } else return { status: 200, data: data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  export async function getCmts(id: number) {
+    try {
+      const supabase = await createSupabaseServerClient();
+      const { data, error } = await supabase
+        .from("cmt").select("*").eq("log_id", id)
+      if (error) {
+        return { status: 400, data: [error] };
+      } else return { status: 200, data: data };
+    } catch (error) {
+      console.log(error);
+    }
+  }

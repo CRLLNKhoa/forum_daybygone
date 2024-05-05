@@ -1,16 +1,17 @@
 "use client";
-import { getDetailLog } from "@/actions/logAction";
+import { addCmt, getCmts, getDetailLog } from "@/actions/logAction";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaCaretRight } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
+import { useUser } from "@clerk/nextjs";
 
 export default function Page() {
-  const [loading,setLoading] = useState(false)
-  const [data,setData] = useState<any>()
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<any>();
   const params = useParams();
   useEffect(() => {
     const get = async () => {
@@ -23,8 +24,8 @@ export default function Page() {
     get();
   }, []);
 
-  if(!loading){
-    return(
+  if (!loading) {
+    return (
       <div className="flex flex-col gap-4">
         <Skeleton className="w-[100px] h-[20px] rounded-full" />
         <Skeleton className="w-2/3 h-[20px] rounded-full" />
@@ -33,10 +34,9 @@ export default function Page() {
         <Skeleton className="w-full h-[120px] rounded-lg" />
         <Skeleton className="w-1/2 h-[20px] rounded-full" />
       </div>
-    )
-  }  
+    );
+  }
 
-    
   return (
     <div className="flex flex-col min-h-screen gap-6 pt-4">
       <h1 className="font-semibold text-xl border-b pb-1">
@@ -45,17 +45,20 @@ export default function Page() {
       <div className="flex flex-col">
         <p>
           Người chơi:
-          <b className="font-semibold ml-4">{data?.player}</b> 
+          <b className="font-semibold ml-4">{data?.player}</b>
         </p>
         <p>
           Day:
-          <b className="font-semibold ml-4">{data?.day}</b> 
+          <b className="font-semibold ml-4">{data?.day}</b>
         </p>
         <div className="flex items-center py-1">
           <h1 className="mr-2 font-semibold">Đội hình: </h1>
           <div className="flex items-center gap-1">
             {data?.team?.map((item: any) => (
-              <img src={`/hero/${item}.png`} className="w-8 h-8 bg-black/20 rounded-full"/>
+              <img
+                src={`/hero/${item}.png`}
+                className="w-8 h-8 bg-black/20 rounded-full"
+              />
             ))}
           </div>
         </div>
@@ -65,22 +68,44 @@ export default function Page() {
           <ItemSkill img={"/skill/hlpng.png"} level={data?.hl} />
           <ItemSkill img={"/skill/bdpng.png"} level={data?.bd} />
           <ItemSkill img={"/skill/uppng.png"} level={data?.up} />
-          <ItemSkill img={"/skill/inspng.png"} level={data?.ins} />
+          <ItemSkill img={"/skill/inspng.png"} level={data?.in} />
           <ItemSkill img={"/skill/mspng.png"} level={data?.ms} />
           <ItemSkill img={"/skill/bspng.png"} level={data?.bs} />
         </div>
         <h1 className="font-semibold mt-2">Level runes:</h1>
         <div className="flex items-center flex-wrap gap-2 mt-1">
-          <ItemSkill unl={data?.crit?.lvUnl} img={"/runes/crit.webp"} level={data?.crit?.lv} />
-          <ItemSkill unl={data?.dame?.lvUnl} img={"/runes/dame.webp"} level={data?.dame?.lv} />
-          <ItemSkill unl={data?.hero?.lvUnl} img={"/runes/hero.webp"} level={data?.hero?.lv} />
+          <ItemSkill
+            unl={data?.crit?.lvUnl}
+            img={"/runes/crit.webp"}
+            level={data?.crit?.lv}
+          />
+          <ItemSkill
+            unl={data?.dame?.lvUnl}
+            img={"/runes/dame.webp"}
+            level={data?.dame?.lv}
+          />
+          <ItemSkill
+            unl={data?.hero?.lvUnl}
+            img={"/runes/hero.webp"}
+            level={data?.hero?.lv}
+          />
           {data?.cc && <ItemSkill img={"/runes/cc.webp"} level={data?.cc} />}
-          {data?.heal && <ItemSkill img={"/runes/heal.webp"} level={data?.heal} />}
-          {data?.mana && <ItemSkill img={"/runes/mana.webp"} level={data?.mana} />}
+          {data?.heal && (
+            <ItemSkill img={"/runes/heal.webp"} level={data?.heal} />
+          )}
+          {data?.mana && (
+            <ItemSkill img={"/runes/mana.webp"} level={data?.mana} />
+          )}
         </div>
-        <p className="font-semibold mt-4">World Tree: <i className="font-thin px-2">{data?.wt || "Chưa mở"}</i></p>
-        <Link href={`/push/player/${data?.player}`} className="mt-2 hover:underline text-sky-500 flex items-center gap-2 ml-auto">
-            Xem thêm nhận ký của người chơi này <FaCaretRight /></Link>
+        <p className="font-semibold mt-4">
+          World Tree: <i className="font-thin px-2">{data?.wt || "Chưa mở"}</i>
+        </p>
+        <Link
+          href={`/push/player/${data?.player}`}
+          className="mt-2 hover:underline text-sky-500 flex items-center gap-2 ml-auto"
+        >
+          Xem thêm nhật ký của người chơi này <FaCaretRight />
+        </Link>
       </div>
       <BinhLuan />
     </div>
@@ -102,45 +127,77 @@ function ItemSkill(_props: { img: string; level: string; unl?: string }) {
 }
 
 function BinhLuan() {
+  const [content, setContent] = useState("");
+  const [listCmt, setListCmt] = useState<any>();
+  const params = useParams();
+  const { user } = useUser();
+
+  const handleCmt = async () => {
+    if (content.length < 10 || content.length > 500) {
+      alert("Bình luận ít nhất 10 ký tự và tối đa 500!");
+    } else {
+      console.log("debug");
+      const result = await addCmt(content, Number(params?.id));
+      console.log(result);
+      if (result?.status === 200) {
+        setListCmt([...listCmt, result?.data[0]]);
+        setContent("");
+      }
+    }
+  };
+
+  useEffect(() => {
+    const get = async () => {
+      const result = await getCmts(Number(params?.id));
+      if (result?.status === 200) {
+        setListCmt(result?.data);
+      }
+    };
+    get();
+  }, []);
+
   return (
     <div className="flex flex-col border-t border-dashed pt-4">
-      <h1 className="font-semibold mb-2 text-lg">Bình luận</h1>
+      <h1 className="font-semibold mb-2 text-lg">Bình luận (đăng nhập để cmt)</h1>
       <div className="flex flex-col border rounded-lg overflow-hidden p-2">
         <textarea
-          placeholder="Nội dung bình luận...."
+          placeholder="Nội dung bình luận (nội dung không phù hợp sẽ bị ban)...."
           name="binhluan"
           id="binhluan"
           className="w-full outline-none"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         ></textarea>
-        <Button className="ml-auto" size={"icon"}>
-          <IoSend className="w-4 h-4" />
-        </Button>
+        {user && (
+          <Button onClick={handleCmt} className="ml-auto" size={"icon"}>
+            <IoSend className="w-4 h-4" />
+          </Button>
+        )}
       </div>
       <div className="flex flex-col mt-4 gap-4">
-        <ItemBinhLuan />
-        <ItemBinhLuan />
-        <ItemBinhLuan />
+        {listCmt?.map((item: any) => (
+          <ItemBinhLuan
+            avatar={item.avatar}
+            name={item?.name}
+            content={item.content}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-function ItemBinhLuan() {
+function ItemBinhLuan(_props: {
+  avatar: string;
+  name: string;
+  content: string;
+}) {
   return (
     <div className="flex items-start border p-2 rounded-md">
-      <img
-        src="https://check-rewind.vercel.app/logo.png"
-        alt="img"
-        className="w-12 h-12"
-      />
+      <img src={_props.avatar} alt="img" className="w-12 h-12 rounded-full" />
       <div className="flex flex-col ml-2">
-        <h2 className="text-lg font-bold">Lương Khoa</h2>
-        <p className="text-sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-          voluptas ipsam, saepe officia, temporibus quod aliquid sed aut
-          voluptates accusantium porro dolorum fugiat asperiores velit excepturi
-          cumque dicta, nemo dolore?
-        </p>
+        <h2 className="text-lg font-bold">{_props.name}</h2>
+        <p className="text-sm">{_props.content}</p>
       </div>
     </div>
   );

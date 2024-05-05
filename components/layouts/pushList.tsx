@@ -39,7 +39,7 @@ export default function PushList() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {list?.map((item: any) => (
-          <Item data={item} />
+          <Item key={item.id} data={item} />
         ))}
       </div>
     </div>
@@ -61,7 +61,7 @@ function Item({ data }: { data: any }) {
       </div>
       <div className="flex items-center justify-center gap-1">
         {data?.team?.map((item: any) => (
-          <img
+          <img key={item}
             src={`/hero/${item}.png`}
             className="w-8 h-8 bg-black/20 rounded-full"
           />
