@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function Menu() {
@@ -7,7 +8,7 @@ export default function Menu() {
         Các danh mục hàng đầu
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="flex items-center h-[80px] bg-[#d3e3fd] rounded-xl p-4 
+        <div className="flex items-center h-[80px] bg-[#d3e3fd] rounded-xl p-4 shadow-lg
         text-white font-semibold cursor-pointer justify-between hover:bg-[#a8c7fa]
         duration-300 hover:text-white group">
           Single Rewind
@@ -16,7 +17,7 @@ export default function Menu() {
             <img className="w-5 h-5" src="/single.svg" alt="icon" />
           </div>
         </div>
-        <div className="flex items-center h-[80px] bg-[#e3e3e3] rounded-xl p-4 
+        <div className="flex items-center h-[80px] bg-[#e3e3e3] rounded-xl p-4 shadow-lg
         text-white font-semibold cursor-pointer justify-between hover:bg-[#c7c7c7]
         duration-300 hover:text-white group">
           Double Rewind
@@ -25,7 +26,7 @@ export default function Menu() {
             <img className="w-5 h-5" src="/tripple.svg" alt="icon" />
           </div>
         </div>
-        <div className="flex items-center h-[80px] bg-[#c2e7ff] rounded-xl p-4 
+        <div className="flex items-center h-[80px] bg-[#c2e7ff] rounded-xl p-4 shadow-lg
         text-white font-semibold cursor-pointer justify-between hover:bg-[#7fcfff]
         duration-300 hover:text-white group">
           Time Rewind
@@ -34,7 +35,7 @@ export default function Menu() {
             <img className="w-6 h-6" src="/time.svg" alt="icon" />
           </div>
         </div>
-        <div className="flex items-center h-[80px] bg-[#c4eed0] rounded-xl p-4 
+        <Link href={"/push"} className="flex items-center h-[80px] bg-[#c4eed0] rounded-xl p-4 shadow-lg
         text-white font-semibold cursor-pointer justify-between hover:bg-[#6dd58c]
         duration-300 hover:text-white group">
           Push day 
@@ -42,8 +43,8 @@ export default function Menu() {
           rounded-full group-hover:bg-[#37be5f] duration-300">
             <img className="w-5 h-5" src="/push.svg" alt="icon" />
           </div>
-        </div>
-        <div className="flex items-center h-[80px] bg-[#efd197] rounded-xl p-4 
+        </Link>
+        <div className="flex items-center h-[80px] bg-[#efd197] rounded-xl p-4 shadow-lg
         text-white font-semibold cursor-pointer justify-between hover:bg-[#f0bc5a]
         duration-300 hover:text-white group">
           Đội hình
@@ -52,7 +53,7 @@ export default function Menu() {
             <img className="w-5 h-5" src="/team.svg" alt="icon" />
           </div>
         </div>
-        <div className="flex items-center h-[80px] bg-[#c495ef] rounded-xl p-4 
+        <div className="flex items-center h-[80px] bg-[#c495ef] rounded-xl p-4 shadow-lg
         text-white font-semibold cursor-pointer justify-between hover:bg-[#ae64f1]
         duration-300 hover:text-white group">
           World tree
@@ -61,7 +62,7 @@ export default function Menu() {
             <img className="w-5 h-5" src="/tree.svg" alt="icon" />
           </div>
         </div>
-        <div className="flex items-center h-[80px] bg-[#cd7c77] rounded-xl p-4 
+        <div className="flex items-center h-[80px] bg-[#cd7c77] rounded-xl p-4 shadow-lg
         text-white font-semibold cursor-pointer justify-between hover:bg-[#bf5751]
         duration-300 hover:text-white group">
           Tính dame
@@ -70,13 +71,13 @@ export default function Menu() {
             <img className="w-8 h-8" src="/calculator.svg" alt="icon" />
           </div>
         </div>
-        <div className="flex items-center h-[80px] bg-[#c4cd77] rounded-xl p-4 
+        <div className="flex items-center h-[80px] bg-[#c4cd77] rounded-xl p-4 shadow-lg
         text-white font-semibold cursor-pointer justify-between hover:bg-[#adbf51]
         duration-300 hover:text-white group">
           Blogs
           <div className="w-12 h-12 flex items-center justify-center bg-[#aebf51]
           rounded-full group-hover:bg-[#c8cd36] duration-300">
-            <img className="w-8 h-8" src="/calculator.svg" alt="icon" />
+            <img className="w-8 h-8" src="/blog.svg" alt="icon" />
           </div>
         </div>
       </div>

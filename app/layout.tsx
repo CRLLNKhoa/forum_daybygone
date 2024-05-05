@@ -2,8 +2,15 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layouts/header";
+import Footer from "@/components/layouts/footer";
+import { ClerkProvider } from "@clerk/nextjs";
 
-const poppins = Poppins({ subsets: ["latin"], display: 'swap', variable: "--font-poppins", weight: ["300", "600"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-poppins",
+  weight: ["300", "600"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +23,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
     <html lang="en">
-      <body className={poppins.variable + "relative"}>
+      <body className={ "relative flex flex-col"}>
         <Header />
         <div className="container max-w-[1024px] pb-12">{children}</div>
-        </body>
+        <Footer />
+      </body>
     </html>
+    </ClerkProvider>
   );
 }

@@ -16,13 +16,13 @@ export default function Header() {
   return (
     <div
       className={cn(
-        "h-14 flex items-center justify-between px-4 sticky top-0 duration-500 z-50 bg-white",
+        "h-16 flex items-center justify-between px-4 sticky top-0 left-0 right-0 duration-500 z-50 bg-white",
         !top && "shadow-md"
       )}
     >
       <Link href={"/"} className="flex items-center">
         <img className="w-6 h-6 mr-2" src="/tenor.gif" alt="logo" />
-        Check cost
+        <p className="font-semibold text-lg">Check cost</p>
       </Link>
       <Button size={"sm"}>Đăng nhập</Button>
     </div>
