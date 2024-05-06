@@ -1,5 +1,6 @@
 "use client";
 import { getLogs } from "@/actions/logAction";
+import Skeleton from "@/components/layouts/skeleton";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -18,6 +19,12 @@ export default function Page() {
     };
     get();
   }, []);
+
+  if(!loading){
+    return(
+      <Skeleton item={15} />
+    )
+  }
   return (
     <div className="min-h-screen">
       <h1 className="text-center font-semibold text-xl border-t border-b border-dashed py-2">

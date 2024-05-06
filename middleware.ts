@@ -12,7 +12,8 @@ export default authMiddleware({
     "/calculator",
     "/about-me",
     "/teams",
-    "/time-rewind"
+    "/time-rewind",
+    "/follows"
   ],
 });
 

@@ -15,7 +15,7 @@ export default function ListBlog() {
             Giúp bạn leo day một cách dễ dàng hơn
           </p>
         </div>
-        <Link href={"/push"} className="text-sky-600 font-semibold text-sm">
+        <Link href={"/blogs"} className="text-sky-600 font-semibold text-sm">
           Xem tất cả
         </Link>
       </div>

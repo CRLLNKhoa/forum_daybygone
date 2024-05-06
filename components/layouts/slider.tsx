@@ -54,20 +54,7 @@ export default function SliderComponent() {
   return (
     <div>
       <Slider {...settings}>
-        <div
-          className="bg-[url('/banner3.png')] h-[360px] bg-cover bg-center rounded-3xl
-      "
-        >
-          <div className="flex flex-col items-center justify-center h-full text-center">
-            <h1 className="text-xl lg:text-3xl font-semibold">
-              Chào mừng bạn đến với website Check Cost
-            </h1>
-            <p className="text-sm lg:text-md">
-              Hỗ trợ giúp bạn thuận tiện trong việc chơi game DBG
-            </p>
-            <img src="/logogame.png" alt="logo" className="mt-4 w-[240px]" />
-          </div>
-        </div>
+        
         <div
           className="bg-[url('/banner1.png')] h-[360px] bg-cover bg-center rounded-3xl
       "

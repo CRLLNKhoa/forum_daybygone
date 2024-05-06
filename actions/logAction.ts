@@ -153,3 +153,48 @@ export async function getLogHomePage() {
       console.log(error);
     }
   }
+
+
+
+  export async function addTeam(newTeam: any) {
+    try {
+      const supabase = await createSupabaseServerClient();
+      const { data, error } = await supabase
+        .from("team")
+        .insert([newTeam])
+        .select("*");
+      if (error) {
+        return { status: 400, data: [error] };
+      } else return { status: 200, data: data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  export async function getTeams() {
+    try {
+      const supabase = await createSupabaseServerClient();
+      const { data, error } = await supabase
+        .from("team").select("*")
+      if (error) {
+        return { status: 400, data: [error] };
+      } else return { status: 200, data: data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  export async function getTeams6() {
+    try {
+      const supabase = await createSupabaseServerClient();
+      const { data, error } = await supabase
+        .from("team").select("*").limit(6)
+      if (error) {
+        return { status: 400, data: [error] };
+      } else return { status: 200, data: data };
+    } catch (error) {
+      console.log(error);
+    }
+  }

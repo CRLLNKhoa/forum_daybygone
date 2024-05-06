@@ -5,6 +5,7 @@ import Menu from "@/components/layouts/menu";
 import PushList from "@/components/layouts/pushList";
 import PushTeam from "@/components/layouts/pushTeam";
 import SliderComponent from "@/components/layouts/slider";
+import Spinner from "@/components/layouts/spinner";
 
 export default function Home() {
   return (

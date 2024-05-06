@@ -69,3 +69,7 @@
 .poppins {
   font-family: var(--font-poppins);
 }
+
+#canvas{
+  width: 100%;
+}

@@ -1,7 +1,29 @@
+"use client"
+import { getTeams6 } from "@/actions/logAction";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Skeleton from "./skeleton";
+import Cardteam from "./cardteam";
 
 export default function PushTeam() {
+  const [loading, setLoading] = useState(false);
+  const [teams, setTeams] = useState<any[]>([]);
+  useEffect(() => {
+    const get = async () => {
+      const result = await getTeams6();
+      if (result?.status === 200) {
+        setTeams(result?.data);
+        setLoading(true);
+      }
+    };
+    get();
+  }, []);
+
+  if(!loading){
+    return(
+      <Skeleton item={6} />
+    )
+  }
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between mb-8">
@@ -13,38 +35,14 @@ export default function PushTeam() {
             Giúp bạn tối ưu lượng sát thương
           </p>
         </div>
-        <Link href={"/push"} className="text-sky-600 font-semibold text-sm">
+        <Link href={"/teams"} className="text-sky-600 font-semibold text-sm">
           Xem tất cả
         </Link>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-      </div>
-    </div>
-  );
-}
-
-function Item() {
-  return (
-    <div
-      className="flex flex-col border border-sky-600 shadow-lg
-        border-dashed hover:border-red-600 rounded-lg px-6 py-2 cursor-pointer"
-    >
-      <div className="flex mb-2 items-center justify-between">
-        <h1 className="text-sm font-semibold line-clamp-1">Tên đội hình</h1>
-      </div>
-      <div className="flex items-center gap-1">
-        <div className="w-8 h-8 bg-black/20 rounded-full"></div>
-        <div className="w-8 h-8 bg-black/20 rounded-full"></div>
-        <div className="w-8 h-8 bg-black/20 rounded-full"></div>
-        <div className="w-8 h-8 bg-black/20 rounded-full"></div>
-        <div className="w-8 h-8 bg-black/20 rounded-full"></div>
-        <div className="w-8 h-8 bg-black/20 rounded-full"></div>
+      {teams?.map((item: any) => (
+          <Cardteam data={item} />
+        ))}
       </div>
     </div>
   );

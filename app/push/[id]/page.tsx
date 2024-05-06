@@ -8,6 +8,7 @@ import { FaCaretRight } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUser } from "@clerk/nextjs";
+import { useFollowStore } from "@/stores/followsStore";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -23,6 +24,39 @@ export default function Page() {
     };
     get();
   }, []);
+
+  const follows = useFollowStore((state:any) => state.follows)
+  const setFollows = useFollowStore((state:any) => state.setFollows)
+
+  useEffect(() => {
+    // Lấy mảng items từ localStorage khi component được mount
+    const storedItems = localStorage.getItem("follows");
+    if (storedItems) {
+      setFollows(JSON.parse(storedItems));
+    }
+  }, []);
+
+  const handleFollow = () => {
+    // Kiểm tra xem newItem có tồn tại trong mảng items chưa
+    if (!follows.includes(data?.player)) {
+      // Tạo một bản sao của mảng items
+      const updatedItems = [...follows];
+      // Thêm mục mới vào bản sao
+      updatedItems.push(data?.player);
+      // Cập nhật state với mục mới
+      setFollows(updatedItems);
+      // Lưu trữ mảng mới vào localStorage
+      localStorage.setItem("follows", JSON.stringify(updatedItems));
+    } else {
+      alert("Mục đã tồn tại trong danh sách!");
+    }
+  };
+
+  const removeItem = () => {
+    const updatedItems = follows.filter((item: any) => item !== data?.player);
+    setFollows(updatedItems);
+    localStorage.setItem("follows", JSON.stringify(updatedItems));
+  };
 
   if (!loading) {
     return (
@@ -100,12 +134,24 @@ export default function Page() {
         <p className="font-semibold mt-4">
           World Tree: <i className="font-thin px-2">{data?.wt || "Chưa mở"}</i>
         </p>
-        <Link
-          href={`/push/player/${data?.player}`}
-          className="mt-2 hover:underline text-sky-500 flex items-center gap-2 ml-auto"
-        >
-          Xem thêm nhật ký của người chơi này <FaCaretRight />
-        </Link>
+        <div className="flex items-center justify-end mt-4">
+          {follows.includes(data?.player) ? (
+            <Button variant={"destructive"} onClick={removeItem} size={"sm"}>
+              Bỏ theo dõi
+            </Button>
+          ) : (
+            <Button onClick={handleFollow} size={"sm"}>
+              Theo dõi
+            </Button>
+          )}
+          <Link
+            href={`/push/player/${data?.player}`}
+            className="mt-2 hover:underline text-sky-500 flex items-center gap-2 ml-auto"
+          >
+            Nhật ký người chơi này
+            <FaCaretRight />
+          </Link>
+        </div>
       </div>
       <BinhLuan />
     </div>
@@ -158,7 +204,9 @@ function BinhLuan() {
 
   return (
     <div className="flex flex-col border-t border-dashed pt-4">
-      <h1 className="font-semibold mb-2 text-lg">Bình luận (đăng nhập để cmt)</h1>
+      <h1 className="font-semibold mb-2 text-lg">
+        Bình luận (đăng nhập để cmt)
+      </h1>
       <div className="flex flex-col border rounded-lg overflow-hidden p-2">
         <textarea
           placeholder="Nội dung bình luận (nội dung không phù hợp sẽ bị ban)...."
