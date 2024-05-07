@@ -56,7 +56,7 @@ export default function Page() {
          <Link href={"/push/add"}> <IoIosAddCircleOutline className="w-6 h-6 mr-1" /> Đóng góp</Link>
         </Button>
       </div>
-      <div className="grid grid-cols-3 gap-x-4 gap-y-8 mt-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-4 gap-y-8 mt-4">
         {list?.map((item: any) => (
           <Item
             id={item.id}

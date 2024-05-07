@@ -53,7 +53,7 @@ export default function Single() {
     }
   
   return (
-   <div className="flex flex-col mt-8 bg-white w-full items-center justify-center p-6 rounded-lg">
+   <div className="flex flex-col mt-8 bg-white w-full items-center justify-center rounded-lg">
     <h1 className="text-xl font-bold mb-4">Single Rewind</h1>
     <div className="flex items-center gap-4 mb-4">
       <div className="grid w-full max-w-sm items-center gap-1.5">
